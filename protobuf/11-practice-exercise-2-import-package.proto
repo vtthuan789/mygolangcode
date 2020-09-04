@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+import "11-street-with-package.proto";
+
+message Building {
+    string name = 1;
+    int32 number = 2;  
+    my.street.Street street = 3;
+}
