@@ -8,9 +8,9 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 
-	simplepb "github.com/HeWiTo/protobuf-example-go-mod/src/simple"
-	complexpb "github.com/simplesteph/protobuf-example-go/src/complex"
-	enumpb "github.com/simplesteph/protobuf-example-go/src/enum_example"
+	complexpb "protobuf_example_go/src/complex"
+	enumpb "protobuf_example_go/src/enum_example"
+	simplepb "protobuf_example_go/src/simple"
 )
 
 func main() {
