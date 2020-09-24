@@ -8,6 +8,9 @@ service CalculatorService {
 
     rpc PrimeNumbersDecomposition(PrimeNumberDecompositionRequest)
     returns (stream PrimeNumberDecompositionResponse) {}
+
+    rpc ComputeAverage(stream ComputeAverageRequest)
+    returns (ComputeAverageResponse) {}
 }
 
 message SumOperand {
@@ -33,4 +36,12 @@ message PrimeNumberDecompositionRequest {
 
 message PrimeNumberDecompositionResponse {
     int32 prime_number = 1;
+}
+
+message ComputeAverageRequest {
+    int32 number = 1;
+}
+
+message ComputeAverageResponse {
+    float average = 1;
 }
