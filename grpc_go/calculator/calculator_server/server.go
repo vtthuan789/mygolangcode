@@ -14,17 +14,21 @@ import (
 
 type server struct{}
 
-func (*server) Sum(ctx context.Context, req *calculatorpb.SumRequest) (*calculatorpb.SumResponse, error) {
+func (*server) Sum(ctx context.Context, req *calculatorpb.SumRequest) (
+	*calculatorpb.SumResponse, error) {
 	fmt.Println("Sum() function is calling with", req)
 
 	res := &calculatorpb.SumResponse{
-		Sum: int64(req.GetOperand().GetOperand1()) + int64(req.GetOperand().GetOperand2()),
+		Sum: int64(req.GetOperand().GetOperand1()) +
+			int64(req.GetOperand().GetOperand2()),
 	}
 
 	return res, nil
 }
 
-func (*server) PrimeNumbersDecomposition(req *calculatorpb.PrimeNumberDecompositionRequest, stream calculatorpb.PrimeNumberDecompositionService_PrimeNumbersDecompositionServer) error {
+func (*server) PrimeNumbersDecomposition(
+	req *calculatorpb.PrimeNumberDecompositionRequest,
+	stream calculatorpb.CalculatorService_PrimeNumbersDecompositionServer) error {
 	fmt.Println("PrimeNumbersDecomposition() function is calling with", req)
 
 	var p int32 = 2
@@ -55,8 +59,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	calculatorpb.RegisterSumServiceServer(s, &server{})
-	calculatorpb.RegisterPrimeNumberDecompositionServiceServer(s, &server{})
+	calculatorpb.RegisterCalculatorServiceServer(s, &server{})
 
 	err = s.Serve(lis)
 

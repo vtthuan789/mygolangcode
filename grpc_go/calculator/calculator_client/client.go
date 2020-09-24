@@ -20,14 +20,13 @@ func main() {
 
 	defer cc.Close()
 
-	c := calculatorpb.NewSumServiceClient(cc)
-	compsiteClient := calculatorpb.NewPrimeNumberDecompositionServiceClient(cc)
+	c := calculatorpb.NewCalculatorServiceClient(cc)
 
 	doUnary(c)
-	doStreamingServer(compsiteClient)
+	doStreamingServer(c)
 }
 
-func doStreamingServer(cc calculatorpb.PrimeNumberDecompositionServiceClient) {
+func doStreamingServer(cc calculatorpb.CalculatorServiceClient) {
 	fmt.Println("Start doing a Streaming Prime Number Decomposition RPC...")
 
 	req := &calculatorpb.PrimeNumberDecompositionRequest{
@@ -53,11 +52,12 @@ func doStreamingServer(cc calculatorpb.PrimeNumberDecompositionServiceClient) {
 			log.Fatalln("Error while reading stream:", err)
 		}
 
-		fmt.Println("Receive response from PrimeNumbersDecomposition service:", num.GetPrimeNumber())
+		fmt.Println("Receive response from PrimeNumbersDecomposition service:",
+			num.GetPrimeNumber())
 	}
 }
 
-func doUnary(c calculatorpb.SumServiceClient) {
+func doUnary(c calculatorpb.CalculatorServiceClient) {
 	fmt.Println("Start doing a Unary Sum RPC...")
 
 	req := &calculatorpb.SumRequest{

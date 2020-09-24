@@ -349,24 +349,22 @@ var file_calculator_calculatorpb_calculator_proto_rawDesc = []byte{
 	0x44, 0x65, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x72, 0x69, 0x6d, 0x65, 0x5f, 0x6e,
 	0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0b, 0x70, 0x72, 0x69,
-	0x6d, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x32, 0x46, 0x0a, 0x0a, 0x53, 0x75, 0x6d, 0x53,
-	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x38, 0x0a, 0x03, 0x53, 0x75, 0x6d, 0x12, 0x16, 0x2e,
+	0x6d, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x32, 0xc9, 0x01, 0x0a, 0x11, 0x43, 0x61, 0x6c,
+	0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x38,
+	0x0a, 0x03, 0x53, 0x75, 0x6d, 0x12, 0x16, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74,
+	0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e,
 	0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74,
-	0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
-	0x32, 0x9d, 0x01, 0x0a, 0x1f, 0x50, 0x72, 0x69, 0x6d, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72,
-	0x44, 0x65, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x12, 0x7a, 0x0a, 0x19, 0x50, 0x72, 0x69, 0x6d, 0x65, 0x4e, 0x75, 0x6d,
-	0x62, 0x65, 0x72, 0x73, 0x44, 0x65, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x2b, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x50,
-	0x72, 0x69, 0x6d, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x44, 0x65, 0x63, 0x6f, 0x6d, 0x70,
-	0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2c,
-	0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x50, 0x72, 0x69, 0x6d,
-	0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x44, 0x65, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x69,
-	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01,
-	0x42, 0x19, 0x5a, 0x17, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x63,
-	0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x7a, 0x0a, 0x19, 0x50, 0x72, 0x69, 0x6d,
+	0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x44, 0x65, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x73,
+	0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x2b, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74,
+	0x6f, 0x72, 0x2e, 0x50, 0x72, 0x69, 0x6d, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x44, 0x65,
+	0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e,
+	0x50, 0x72, 0x69, 0x6d, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x44, 0x65, 0x63, 0x6f, 0x6d,
+	0x70, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x30, 0x01, 0x42, 0x19, 0x5a, 0x17, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74,
+	0x6f, 0x72, 0x2f, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x70, 0x62, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -393,10 +391,10 @@ var file_calculator_calculatorpb_calculator_proto_goTypes = []interface{}{
 var file_calculator_calculatorpb_calculator_proto_depIdxs = []int32{
 	0, // 0: calculator.SumRequest.operand:type_name -> calculator.SumOperand
 	3, // 1: calculator.PrimeNumberDecompositionRequest.composite_number:type_name -> calculator.CompositeNumber
-	1, // 2: calculator.SumService.Sum:input_type -> calculator.SumRequest
-	4, // 3: calculator.PrimeNumberDecompositionService.PrimeNumbersDecomposition:input_type -> calculator.PrimeNumberDecompositionRequest
-	2, // 4: calculator.SumService.Sum:output_type -> calculator.SumResponse
-	5, // 5: calculator.PrimeNumberDecompositionService.PrimeNumbersDecomposition:output_type -> calculator.PrimeNumberDecompositionResponse
+	1, // 2: calculator.CalculatorService.Sum:input_type -> calculator.SumRequest
+	4, // 3: calculator.CalculatorService.PrimeNumbersDecomposition:input_type -> calculator.PrimeNumberDecompositionRequest
+	2, // 4: calculator.CalculatorService.Sum:output_type -> calculator.SumResponse
+	5, // 5: calculator.CalculatorService.PrimeNumbersDecomposition:output_type -> calculator.PrimeNumberDecompositionResponse
 	4, // [4:6] is the sub-list for method output_type
 	2, // [2:4] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -491,7 +489,7 @@ func file_calculator_calculatorpb_calculator_proto_init() {
 			NumEnums:      0,
 			NumMessages:   6,
 			NumExtensions: 0,
-			NumServices:   2,
+			NumServices:   1,
 		},
 		GoTypes:           file_calculator_calculatorpb_calculator_proto_goTypes,
 		DependencyIndexes: file_calculator_calculatorpb_calculator_proto_depIdxs,
@@ -511,99 +509,37 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// SumServiceClient is the client API for SumService service.
+// CalculatorServiceClient is the client API for CalculatorService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type SumServiceClient interface {
+type CalculatorServiceClient interface {
 	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
+	PrimeNumbersDecomposition(ctx context.Context, in *PrimeNumberDecompositionRequest, opts ...grpc.CallOption) (CalculatorService_PrimeNumbersDecompositionClient, error)
 }
 
-type sumServiceClient struct {
+type calculatorServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSumServiceClient(cc grpc.ClientConnInterface) SumServiceClient {
-	return &sumServiceClient{cc}
+func NewCalculatorServiceClient(cc grpc.ClientConnInterface) CalculatorServiceClient {
+	return &calculatorServiceClient{cc}
 }
 
-func (c *sumServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
+func (c *calculatorServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
 	out := new(SumResponse)
-	err := c.cc.Invoke(ctx, "/calculator.SumService/Sum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/calculator.CalculatorService/Sum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SumServiceServer is the server API for SumService service.
-type SumServiceServer interface {
-	Sum(context.Context, *SumRequest) (*SumResponse, error)
-}
-
-// UnimplementedSumServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedSumServiceServer struct {
-}
-
-func (*UnimplementedSumServiceServer) Sum(context.Context, *SumRequest) (*SumResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
-}
-
-func RegisterSumServiceServer(s *grpc.Server, srv SumServiceServer) {
-	s.RegisterService(&_SumService_serviceDesc, srv)
-}
-
-func _SumService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SumRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SumServiceServer).Sum(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/calculator.SumService/Sum",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SumServiceServer).Sum(ctx, req.(*SumRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _SumService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "calculator.SumService",
-	HandlerType: (*SumServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Sum",
-			Handler:    _SumService_Sum_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "calculator/calculatorpb/calculator.proto",
-}
-
-// PrimeNumberDecompositionServiceClient is the client API for PrimeNumberDecompositionService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type PrimeNumberDecompositionServiceClient interface {
-	PrimeNumbersDecomposition(ctx context.Context, in *PrimeNumberDecompositionRequest, opts ...grpc.CallOption) (PrimeNumberDecompositionService_PrimeNumbersDecompositionClient, error)
-}
-
-type primeNumberDecompositionServiceClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewPrimeNumberDecompositionServiceClient(cc grpc.ClientConnInterface) PrimeNumberDecompositionServiceClient {
-	return &primeNumberDecompositionServiceClient{cc}
-}
-
-func (c *primeNumberDecompositionServiceClient) PrimeNumbersDecomposition(ctx context.Context, in *PrimeNumberDecompositionRequest, opts ...grpc.CallOption) (PrimeNumberDecompositionService_PrimeNumbersDecompositionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_PrimeNumberDecompositionService_serviceDesc.Streams[0], "/calculator.PrimeNumberDecompositionService/PrimeNumbersDecomposition", opts...)
+func (c *calculatorServiceClient) PrimeNumbersDecomposition(ctx context.Context, in *PrimeNumberDecompositionRequest, opts ...grpc.CallOption) (CalculatorService_PrimeNumbersDecompositionClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_CalculatorService_serviceDesc.Streams[0], "/calculator.CalculatorService/PrimeNumbersDecomposition", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &primeNumberDecompositionServicePrimeNumbersDecompositionClient{stream}
+	x := &calculatorServicePrimeNumbersDecompositionClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -613,16 +549,16 @@ func (c *primeNumberDecompositionServiceClient) PrimeNumbersDecomposition(ctx co
 	return x, nil
 }
 
-type PrimeNumberDecompositionService_PrimeNumbersDecompositionClient interface {
+type CalculatorService_PrimeNumbersDecompositionClient interface {
 	Recv() (*PrimeNumberDecompositionResponse, error)
 	grpc.ClientStream
 }
 
-type primeNumberDecompositionServicePrimeNumbersDecompositionClient struct {
+type calculatorServicePrimeNumbersDecompositionClient struct {
 	grpc.ClientStream
 }
 
-func (x *primeNumberDecompositionServicePrimeNumbersDecompositionClient) Recv() (*PrimeNumberDecompositionResponse, error) {
+func (x *calculatorServicePrimeNumbersDecompositionClient) Recv() (*PrimeNumberDecompositionResponse, error) {
 	m := new(PrimeNumberDecompositionResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -630,52 +566,79 @@ func (x *primeNumberDecompositionServicePrimeNumbersDecompositionClient) Recv() 
 	return m, nil
 }
 
-// PrimeNumberDecompositionServiceServer is the server API for PrimeNumberDecompositionService service.
-type PrimeNumberDecompositionServiceServer interface {
-	PrimeNumbersDecomposition(*PrimeNumberDecompositionRequest, PrimeNumberDecompositionService_PrimeNumbersDecompositionServer) error
+// CalculatorServiceServer is the server API for CalculatorService service.
+type CalculatorServiceServer interface {
+	Sum(context.Context, *SumRequest) (*SumResponse, error)
+	PrimeNumbersDecomposition(*PrimeNumberDecompositionRequest, CalculatorService_PrimeNumbersDecompositionServer) error
 }
 
-// UnimplementedPrimeNumberDecompositionServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedPrimeNumberDecompositionServiceServer struct {
+// UnimplementedCalculatorServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedCalculatorServiceServer struct {
 }
 
-func (*UnimplementedPrimeNumberDecompositionServiceServer) PrimeNumbersDecomposition(*PrimeNumberDecompositionRequest, PrimeNumberDecompositionService_PrimeNumbersDecompositionServer) error {
+func (*UnimplementedCalculatorServiceServer) Sum(context.Context, *SumRequest) (*SumResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
+}
+func (*UnimplementedCalculatorServiceServer) PrimeNumbersDecomposition(*PrimeNumberDecompositionRequest, CalculatorService_PrimeNumbersDecompositionServer) error {
 	return status.Errorf(codes.Unimplemented, "method PrimeNumbersDecomposition not implemented")
 }
 
-func RegisterPrimeNumberDecompositionServiceServer(s *grpc.Server, srv PrimeNumberDecompositionServiceServer) {
-	s.RegisterService(&_PrimeNumberDecompositionService_serviceDesc, srv)
+func RegisterCalculatorServiceServer(s *grpc.Server, srv CalculatorServiceServer) {
+	s.RegisterService(&_CalculatorService_serviceDesc, srv)
 }
 
-func _PrimeNumberDecompositionService_PrimeNumbersDecomposition_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _CalculatorService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SumRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CalculatorServiceServer).Sum(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/calculator.CalculatorService/Sum",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CalculatorServiceServer).Sum(ctx, req.(*SumRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CalculatorService_PrimeNumbersDecomposition_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(PrimeNumberDecompositionRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(PrimeNumberDecompositionServiceServer).PrimeNumbersDecomposition(m, &primeNumberDecompositionServicePrimeNumbersDecompositionServer{stream})
+	return srv.(CalculatorServiceServer).PrimeNumbersDecomposition(m, &calculatorServicePrimeNumbersDecompositionServer{stream})
 }
 
-type PrimeNumberDecompositionService_PrimeNumbersDecompositionServer interface {
+type CalculatorService_PrimeNumbersDecompositionServer interface {
 	Send(*PrimeNumberDecompositionResponse) error
 	grpc.ServerStream
 }
 
-type primeNumberDecompositionServicePrimeNumbersDecompositionServer struct {
+type calculatorServicePrimeNumbersDecompositionServer struct {
 	grpc.ServerStream
 }
 
-func (x *primeNumberDecompositionServicePrimeNumbersDecompositionServer) Send(m *PrimeNumberDecompositionResponse) error {
+func (x *calculatorServicePrimeNumbersDecompositionServer) Send(m *PrimeNumberDecompositionResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-var _PrimeNumberDecompositionService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "calculator.PrimeNumberDecompositionService",
-	HandlerType: (*PrimeNumberDecompositionServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+var _CalculatorService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "calculator.CalculatorService",
+	HandlerType: (*CalculatorServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Sum",
+			Handler:    _CalculatorService_Sum_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "PrimeNumbersDecomposition",
-			Handler:       _PrimeNumberDecompositionService_PrimeNumbersDecomposition_Handler,
+			Handler:       _CalculatorService_PrimeNumbersDecomposition_Handler,
 			ServerStreams: true,
 		},
 	},
