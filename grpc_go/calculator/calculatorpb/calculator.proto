@@ -19,3 +19,19 @@ message SumResponse {
 service SumService {
     rpc Sum(SumRequest) returns (SumResponse) {}
 }
+
+message CompositeNumber {
+    int32 value = 1;
+}
+
+message PrimeNumberDecompositionRequest {
+    CompositeNumber composite_number = 1;
+}
+
+message PrimeNumberDecompositionResponse {
+    int32 prime_number = 1;
+}
+
+service PrimeNumberDecompositionService {
+    rpc PrimeNumbersDecomposition(PrimeNumberDecompositionRequest) returns (stream PrimeNumberDecompositionResponse) {}
+}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"grpc_go/calculator/calculatorpb"
+	"io"
 	"log"
 
 	"google.golang.org/grpc"
@@ -20,8 +21,40 @@ func main() {
 	defer cc.Close()
 
 	c := calculatorpb.NewSumServiceClient(cc)
+	compsiteClient := calculatorpb.NewPrimeNumberDecompositionServiceClient(cc)
 
 	doUnary(c)
+	doStreamingServer(compsiteClient)
+}
+
+func doStreamingServer(cc calculatorpb.PrimeNumberDecompositionServiceClient) {
+	fmt.Println("Start doing a Streaming Prime Number Decomposition RPC...")
+
+	req := &calculatorpb.PrimeNumberDecompositionRequest{
+		CompositeNumber: &calculatorpb.CompositeNumber{
+			Value: 31415936,
+		},
+	}
+
+	res, err := cc.PrimeNumbersDecomposition(context.Background(), req)
+
+	if err != nil {
+		log.Fatalf("Error while calling PrimeNumbersDecomposition RPC: %v", err)
+	}
+
+	for {
+		num, err := res.Recv()
+
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			log.Fatalln("Error while reading stream:", err)
+		}
+
+		fmt.Println("Receive response from PrimeNumbersDecomposition service:", num.GetPrimeNumber())
+	}
 }
 
 func doUnary(c calculatorpb.SumServiceClient) {
