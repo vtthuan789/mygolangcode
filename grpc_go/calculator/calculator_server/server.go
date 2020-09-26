@@ -77,6 +77,43 @@ func (*server) ComputeAverage(
 
 }
 
+func (*server) FindMaximum(
+	stream calculatorpb.CalculatorService_FindMaximumServer) error {
+	fmt.Println("FindMaximum() function is calling with a streaming request")
+	var numOfRequests int32 = 0
+	var result int32
+
+	for {
+		req, err := stream.Recv()
+
+		if err == io.EOF {
+			return nil
+		}
+
+		if err != nil {
+			log.Fatalln("Error while reading client stream:", err)
+			return err
+		}
+
+		numOfRequests++
+		if numOfRequests == 1 {
+			result = req.GetNumber()
+		} else {
+			if result < req.GetNumber() {
+				result = req.GetNumber()
+			}
+		}
+		err = stream.Send(&calculatorpb.FindMaximumResponse{
+			Result: result,
+		})
+
+		if err != nil {
+			log.Fatalln("Error while sending client stream:", err)
+			return err
+		}
+	}
+}
+
 func main() {
 	fmt.Println("Server is running!")
 	lis, err := net.Listen("tcp", "0.0.0.0:50051")

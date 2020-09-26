@@ -23,9 +23,45 @@ func main() {
 
 	c := calculatorpb.NewCalculatorServiceClient(cc)
 
-	doUnary(c)
-	doStreamingServer(c)
-	doStreamingClient(c)
+	//doUnary(c)
+	//doStreamingServer(c)
+	//doStreamingClient(c)
+	doBiDiStreaming(c)
+}
+
+func doBiDiStreaming(cc calculatorpb.CalculatorServiceClient) {
+	fmt.Println("Start doing a BiDi Streaming Client RPC...")
+
+	// Create stream by invoking client
+	stream, err := cc.FindMaximum(context.Background())
+	if err != nil {
+		log.Fatalln("Error while calling FindMaximum RPC:", err)
+	}
+
+	// Send a bunch of requests
+	go func() {
+		for _, number := range []int32{-12, 34, -78, 56, 67, -89} {
+			fmt.Println("Sending request:", number)
+			stream.Send(&calculatorpb.FindMaximumRequest{
+				Number: number,
+			})
+			time.Sleep(time.Second)
+		}
+		stream.CloseSend()
+	}()
+
+	// Receive a bunch of response
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalln("Error while reading server response:", err)
+			break
+		}
+		fmt.Println("Receive response from server:", res)
+	}
 }
 
 func doStreamingClient(cc calculatorpb.CalculatorServiceClient) {
