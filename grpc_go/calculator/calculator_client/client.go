@@ -8,6 +8,10 @@ import (
 	"log"
 	"time"
 
+	"google.golang.org/grpc/codes"
+
+	"google.golang.org/grpc/status"
+
 	"google.golang.org/grpc"
 )
 
@@ -26,7 +30,34 @@ func main() {
 	//doUnary(c)
 	//doStreamingServer(c)
 	//doStreamingClient(c)
-	doBiDiStreaming(c)
+	//doBiDiStreaming(c)
+	doErrorHandling(c, -1)
+	doErrorHandling(c, 1024)
+	doErrorHandling(c, 1234)
+}
+
+func doErrorHandling(cc calculatorpb.CalculatorServiceClient, n int32) {
+	fmt.Println("Start doing a Square Root RPC...")
+
+	res, err := cc.SquareRoot(context.Background(),
+		&calculatorpb.SquareRootRequest{
+			Number: n,
+		})
+
+	if err != nil {
+		s, ok := status.FromError(err)
+		if ok {
+			fmt.Println(s.Message())
+			fmt.Println(s.Code())
+			if s.Code() == codes.InvalidArgument {
+				fmt.Println("Request was sent with negative number!")
+			}
+		} else {
+			log.Fatalln("Error from server: ", err)
+		}
+	} else {
+		fmt.Println("Receive response from SquareRoot RPC: ", res)
+	}
 }
 
 func doBiDiStreaming(cc calculatorpb.CalculatorServiceClient) {
