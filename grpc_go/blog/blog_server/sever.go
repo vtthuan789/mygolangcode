@@ -10,6 +10,8 @@ import (
 	"os/signal"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -33,6 +35,7 @@ type blogItem struct {
 
 func (*server) CreateBlog(ctx context.Context, req *blogpb.CreateBlogRequest) (
 	*blogpb.CreateBlogResponse, error) {
+	fmt.Println("CreateBlog() is calling")
 	blog := req.GetBlog()
 
 	data := blogItem{
@@ -63,6 +66,38 @@ func (*server) CreateBlog(ctx context.Context, req *blogpb.CreateBlogRequest) (
 			AuthorId: blog.GetAuthorId(),
 			Content:  blog.GetContent(),
 			Title:    blog.GetTitle(),
+		},
+	}, nil
+}
+
+func (*server) ReadBlog(ctx context.Context, req *blogpb.ReadBlogRequest) (*blogpb.ReadBlogResponse, error) {
+	fmt.Println("ReadBlog() is calling")
+
+	blogID := req.GetBlogId()
+	oid, err := primitive.ObjectIDFromHex(blogID)
+	if err != nil {
+		return nil, status.Errorf(
+			codes.InvalidArgument,
+			fmt.Sprintln("Cannot parse ID"),
+		)
+	}
+
+	data := &blogItem{}
+	filter := bson.M{"_id": oid}
+	res := collection.FindOne(context.Background(), filter)
+	if err := res.Decode(data); err != nil {
+		return nil, status.Errorf(
+			codes.NotFound,
+			fmt.Sprintln("Cannot find blog with specified ID: ", err),
+		)
+	}
+
+	return &blogpb.ReadBlogResponse{
+		Blog: &blogpb.Blog{
+			Id:       data.ID.Hex(),
+			AuthorId: data.AuthorID,
+			Content:  data.Content,
+			Title:    data.Title,
 		},
 	}, nil
 }
