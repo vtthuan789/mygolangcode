@@ -29,6 +29,15 @@ func main() {
 	blogID := createBlog(c, blog)
 	readBlog(c, "5f7c941117f45dd1c348d0a9")
 	readBlog(c, blogID)
+
+	updatedBlog := &blogpb.Blog{
+		Id:       blogID,
+		AuthorId: "Changed Author",
+		Content:  "Changed Content",
+		Title:    "Changed Title",
+	}
+	updateBlog(c, updatedBlog)
+	readBlog(c, blogID)
 }
 
 func createBlog(bc blogpb.BlogServiceClient, b *blogpb.Blog) string {
@@ -57,5 +66,18 @@ func readBlog(bc blogpb.BlogServiceClient, blogID string) {
 		fmt.Println("Error while reading blog:", err)
 	} else {
 		fmt.Println("Bog was read:", res)
+	}
+}
+
+func updateBlog(bc blogpb.BlogServiceClient, blog *blogpb.Blog) {
+	fmt.Println("Updating a blog:", blog)
+
+	res, err := bc.UpdateBlog(context.Background(), &blogpb.UpdateBlogRequest{
+		Blog: blog,
+	})
+	if err != nil {
+		fmt.Println("Error while updating blog:", err)
+	} else {
+		fmt.Println("Bog was updated:", res)
 	}
 }

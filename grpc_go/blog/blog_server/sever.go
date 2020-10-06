@@ -113,15 +113,18 @@ func (*server) UpdateBlog(ctx context.Context, req *blogpb.UpdateBlogRequest) (*
 			fmt.Sprint("Cannot parse ID"),
 		)
 	}
-
-	data := &blogItem{
-		AuthorID: blog.GetAuthorId(),
-		Content:  blog.GetContent(),
-		Title:    blog.GetTitle(),
+	data := &blogItem{}
+	update := bson.M{
+		"$set": bson.M{
+			"author_id": blog.GetAuthorId(),
+			"content":   blog.GetContent(),
+			"title":     blog.GetTitle(),
+		},
 	}
+
 	filter := bson.M{"_id": oid}
 
-	res := collection.FindOneAndUpdate(context.Background(), filter, data)
+	res := collection.FindOneAndUpdate(context.Background(), filter, update)
 	if err := res.Decode(data); err != nil {
 		return nil, status.Errorf(
 			codes.Internal,
