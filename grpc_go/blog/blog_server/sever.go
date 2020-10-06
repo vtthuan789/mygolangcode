@@ -78,7 +78,7 @@ func (*server) ReadBlog(ctx context.Context, req *blogpb.ReadBlogRequest) (*blog
 	if err != nil {
 		return nil, status.Errorf(
 			codes.InvalidArgument,
-			fmt.Sprintln("Cannot parse ID"),
+			fmt.Sprint("Cannot parse ID"),
 		)
 	}
 
@@ -88,7 +88,7 @@ func (*server) ReadBlog(ctx context.Context, req *blogpb.ReadBlogRequest) (*blog
 	if err := res.Decode(data); err != nil {
 		return nil, status.Errorf(
 			codes.NotFound,
-			fmt.Sprintln("Cannot find blog with specified ID: ", err),
+			fmt.Sprint("Cannot find blog with specified ID: ", err),
 		)
 	}
 
