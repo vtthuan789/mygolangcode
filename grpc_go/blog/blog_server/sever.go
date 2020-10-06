@@ -102,6 +102,43 @@ func (*server) ReadBlog(ctx context.Context, req *blogpb.ReadBlogRequest) (*blog
 	}, nil
 }
 
+func (*server) UpdateBlog(ctx context.Context, req *blogpb.UpdateBlogRequest) (*blogpb.UpdateBlogResponse, error) {
+	fmt.Println("UpdateBlog() is calling")
+
+	blog := req.GetBlog()
+	oid, err := primitive.ObjectIDFromHex(blog.GetId())
+	if err != nil {
+		return nil, status.Errorf(
+			codes.InvalidArgument,
+			fmt.Sprint("Cannot parse ID"),
+		)
+	}
+
+	data := &blogItem{
+		AuthorID: blog.GetAuthorId(),
+		Content:  blog.GetContent(),
+		Title:    blog.GetTitle(),
+	}
+	filter := bson.M{"_id": oid}
+
+	res := collection.FindOneAndUpdate(context.Background(), filter, data)
+	if err := res.Decode(data); err != nil {
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprint("Cannot find and update blog with specified ID: ", err),
+		)
+	}
+
+	return &blogpb.UpdateBlogResponse{
+		Blog: &blogpb.Blog{
+			Id:       data.ID.Hex(),
+			AuthorId: data.AuthorID,
+			Content:  data.Content,
+			Title:    data.Title,
+		},
+	}, nil
+}
+
 func main() {
 	// Log where we crashed
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
