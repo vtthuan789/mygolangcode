@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -241,6 +242,8 @@ func main() {
 
 	s := grpc.NewServer()
 	blogpb.RegisterBlogServiceServer(s, &server{})
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
 
 	go func() {
 		fmt.Println("Starting Blog Server!")
