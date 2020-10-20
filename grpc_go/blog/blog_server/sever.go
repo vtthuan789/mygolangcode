@@ -173,6 +173,48 @@ func (*server) DeleteBlog(ctx context.Context, req *blogpb.DeleteBlogRequest) (*
 	return &blogpb.DeleteBlogResponse{BlogId: req.GetBlogId()}, nil
 }
 
+func (*server) ListBlog(req *blogpb.ListBlogRequest, stream blogpb.BlogService_ListBlogServer) error {
+	fmt.Println("ListBlog() is calling")
+
+	cur, err := collection.Find(context.Background(), nil)
+	if err != nil {
+		return status.Errorf(
+			codes.Internal,
+			fmt.Sprint("Unknow internal error: ", err),
+		)
+	}
+
+	defer cur.Close(context.Background())
+
+	for cur.Next(context.Background()) {
+		data := &blogItem{}
+		err := cur.Decode(data)
+		if err != nil {
+			return status.Errorf(
+				codes.Internal,
+				fmt.Sprint("Error while decoding data from MongoDB: ", err),
+			)
+		}
+		stream.Send(&blogpb.ListBlogResponse{
+			Blog: &blogpb.Blog{
+				Id:       data.ID.Hex(),
+				AuthorId: data.AuthorID,
+				Content:  data.Content,
+				Title:    data.Title,
+			},
+		})
+	}
+
+	if err := cur.Err(); err != nil {
+		return status.Errorf(
+			codes.Internal,
+			fmt.Sprint("Unknow internal error: ", err),
+		)
+	}
+
+	return nil
+}
+
 func main() {
 	// Log where we crashed
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
