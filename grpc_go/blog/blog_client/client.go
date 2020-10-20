@@ -38,6 +38,7 @@ func main() {
 	}
 	updateBlog(c, updatedBlog)
 	readBlog(c, blogID)
+	deleteBlog(c, blogID)
 }
 
 func createBlog(bc blogpb.BlogServiceClient, b *blogpb.Blog) string {
@@ -79,5 +80,18 @@ func updateBlog(bc blogpb.BlogServiceClient, blog *blogpb.Blog) {
 		fmt.Println("Error while updating blog:", err)
 	} else {
 		fmt.Println("Bog was updated:", res)
+	}
+}
+
+func deleteBlog(bc blogpb.BlogServiceClient, blogID string) {
+	fmt.Println("Deleting a blog")
+
+	res, err := bc.DeleteBlog(context.Background(), &blogpb.DeleteBlogRequest{
+		BlogId: blogID,
+	})
+	if err != nil {
+		fmt.Println("Error while deleting blog:", err)
+	} else {
+		fmt.Println("Bog was deleted:", res)
 	}
 }
