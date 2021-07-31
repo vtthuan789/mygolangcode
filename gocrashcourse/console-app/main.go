@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/eiannone/keyboard"
 )
@@ -36,19 +37,21 @@ func main() {
 	fmt.Println("6 - Espresso")
 	fmt.Println("Q - Quit the program")
 
-	for {
-		char, _, err := keyboard.GetSingleKey()
+	char := ' '
+	for strings.ToLower(string(char)) != "q" {
+		char, _, err = keyboard.GetSingleKey()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		if char == 'q' || char == 'Q' {
-			break
+		i, _ := strconv.Atoi(string(char))
+		if val, ok := coffees[i]; ok {
+			fmt.Println(fmt.Sprintf("You chose %s", val))
+		} else {
+			fmt.Println(fmt.Sprintf("You chose %c", char))
 		}
 
-		i, _ := strconv.Atoi(string(char))
-		fmt.Println(fmt.Sprintf("You chose %s", coffees[i]))
-
-		fmt.Println("Program existing...")
 	}
+
+	fmt.Println("Program existing...")
 }
