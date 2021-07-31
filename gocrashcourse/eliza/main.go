@@ -19,10 +19,9 @@ func main() {
 		userInput, _ := reader.ReadString('\n')
 		userInput = strings.Replace(userInput, "\r\n", "", -1)
 
+		fmt.Println(doctor.Response(userInput))
 		if userInput == "quit" {
 			break
-		} else {
-			fmt.Println(doctor.Response(userInput))
 		}
 	}
 }
