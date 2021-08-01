@@ -7,7 +7,9 @@ import (
 )
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello world!")
+	html := `<strong>Hello world!</strong>`
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, html)
 }
 
 func main() {
