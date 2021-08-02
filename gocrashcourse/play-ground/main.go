@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/vtthuan/mygolangcode/gocrashcourse/play-ground/helpers"
+	"github.com/vtthuan789/mygolangcode/gocrashcourse/helpers"
 )
 
 func main() {

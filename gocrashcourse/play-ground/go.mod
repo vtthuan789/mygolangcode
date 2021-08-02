@@ -1,3 +1,3 @@
-module github.com/vtthuan789/mygolangcode/tree/master/gocrashcourse
+module github.com/vtthuan789/mygolangcode/gocrashcourse
 
 go 1.15
