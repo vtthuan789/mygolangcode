@@ -3,15 +3,35 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/basic-web-app/pkg/config"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/basic-web-app/pkg/render"
 )
 
+// Repo the repository used by the handlers
+var Repo *Repository
+
+type Repository struct {
+	App *config.AppConfig
+}
+
+// NewRepo creates new repository
+func NewRepo(a *config.AppConfig) *Repository {
+	return &Repository{
+		App: a,
+	}
+}
+
+// NewHandlers sets the repository for handlers
+func NewHandlers(r *Repository) {
+	Repo = r
+}
+
 // Home is the handler for the home page
-func Home(w http.ResponseWriter, r *http.Request) {
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "home.page.tmpl")
 }
 
 // About is the handler for the about page
-func About(w http.ResponseWriter, r *http.Request) {
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "about.page.tmpl")
 }
