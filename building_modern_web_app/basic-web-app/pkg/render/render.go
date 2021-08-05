@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/basic-web-app/pkg/config"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/basic-web-app/pkg/models"
 )
 
 var functions = template.FuncMap{}
@@ -19,8 +20,14 @@ func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
+// AddDefaultData adds default data to template data
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	// Add data you want to apprear in every page
+	return td
+}
+
 // RenderTemplate renders a template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc = map[string]*template.Template{}
 	if app.UseCache {
 		tc = app.TemplateCache
@@ -34,8 +41,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 
 	buf := new(bytes.Buffer)
-
-	_ = t.Execute(buf, nil)
+	td = AddDefaultData(td)
+	_ = t.Execute(buf, td)
 
 	_, err := buf.WriteTo(w)
 	if err != nil {
