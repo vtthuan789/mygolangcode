@@ -1,6 +1,6 @@
 # Bookings and Reservations
 
-The repository for my Bookings and Reservations learing project
+The repository for my Bookings and Reservations learning project
 
 
 - Built in Go version 1.15
