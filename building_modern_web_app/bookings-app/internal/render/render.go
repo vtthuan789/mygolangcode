@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 
 	"github.com/justinas/nosurf"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/config"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/models"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/config"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/models"
 )
 
 var functions = template.FuncMap{}

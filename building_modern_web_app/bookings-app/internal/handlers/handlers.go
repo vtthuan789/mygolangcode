@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/config"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/models"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/render"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/config"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/models"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/render"
 )
 
 // Repo the repository used by the handlers

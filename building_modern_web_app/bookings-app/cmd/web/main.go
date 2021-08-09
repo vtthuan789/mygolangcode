@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/config"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/handlers"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/pkg/render"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/config"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/handlers"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/render"
 )
 
 const portNumber = ":8080"
