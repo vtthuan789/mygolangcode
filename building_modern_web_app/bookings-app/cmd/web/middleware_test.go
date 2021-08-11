@@ -17,16 +17,16 @@ func TestNoSurf(t *testing.T) {
 		t.Errorf("The return value type is not http.Handler, but is %T", v)
 	}
 
-	var myH1 http.Handler
+	// var myH1 http.Handler
 
-	h = NoSurf(myH1)
+	// h = NoSurf(myH1)
 
-	switch v := h.(type) {
-	case http.Handler:
-		// Do nothing
-	default:
-		t.Errorf("The return value type is not http.Handler, but is %T", v)
-	}
+	// switch v := h.(type) {
+	// case http.Handler:
+	// 	// Do nothing
+	// default:
+	// 	t.Errorf("The return value type is not http.Handler, but is %T", v)
+	// }
 
 }
 
