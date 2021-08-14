@@ -47,6 +47,9 @@ func main() {
 func run() (*driver.DB, error) {
 	// Register what is going to be put in sesstion
 	gob.Register(models.Reservation{})
+	gob.Register(models.User{})
+	gob.Register(models.Room{})
+	gob.Register(models.Restriction{})
 
 	// change this to true when in production
 	app.InProduction = false
@@ -85,7 +88,7 @@ func run() (*driver.DB, error) {
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 
-	render.NewTemplate(&app)
+	render.NewRenderer(&app)
 
 	helpers.NewHelpers(&app)
 	// http.HandleFunc("/", handlers.Repo.Home)
