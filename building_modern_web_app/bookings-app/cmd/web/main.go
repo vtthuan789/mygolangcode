@@ -10,6 +10,7 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/config"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/driver"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/handlers"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/helpers"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/models"
@@ -25,10 +26,11 @@ var errorLog *log.Logger
 
 // main is the main function
 func main() {
-	err := run()
+	db, err := run()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.SQL.Close()
 
 	fmt.Printf("Staring application on port %s", portNumber)
 	// _ = http.ListenAndServe(portNumber, nil)
@@ -42,7 +44,7 @@ func main() {
 	log.Fatal(err)
 }
 
-func run() error {
+func run() (*driver.DB, error) {
 	// Register what is going to be put in sesstion
 	gob.Register(models.Reservation{})
 
@@ -63,16 +65,24 @@ func run() error {
 
 	app.Session = session
 
+	// connect to database
+	log.Println("Connecting to database...")
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=postgres password=120919")
+	if err != nil {
+		log.Fatal("Cannot connect to database! Exiting...")
+	}
+	log.Println("Connected to database!")
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("Cannot create template cache")
-		return err
+		return nil, err
 	}
 
 	app.TemplateCache = tc
 	app.UseCache = false
 
-	repo := handlers.NewRepo(&app)
+	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 
 	render.NewTemplate(&app)
@@ -80,5 +90,5 @@ func run() error {
 	helpers.NewHelpers(&app)
 	// http.HandleFunc("/", handlers.Repo.Home)
 	// http.HandleFunc("/about", handlers.Repo.About)
-	return nil
+	return db, nil
 }
