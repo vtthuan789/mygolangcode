@@ -5,5 +5,6 @@ import "github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/
 type DatabaseRepo interface {
 	AllUsers() bool
 
-	InsertReservation(res models.Reservation) error
+	InsertReservation(models.Reservation) (int, error)
+	InsertRoomRestriction(models.RoomRestriction) error
 }
