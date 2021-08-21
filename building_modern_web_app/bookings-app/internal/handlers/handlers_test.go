@@ -264,6 +264,60 @@ func TestRepository_PostReservation(t *testing.T) {
 	}
 }
 
+func TestRepository_ReservationSummary(t *testing.T) {
+	reservation := models.Reservation{
+		RoomID: 1,
+		Room: models.Room{
+			ID:       1,
+			RoomName: "General's Quarters",
+		},
+		FirstName: "abc",
+		LastName:  "def",
+		Email:     "abc@ex.com",
+	}
+	// 2021-01-01 -- 01/02 03:04:05PM '06 -0700
+	layout := "2006-01-02"
+	startDate, err := time.Parse(layout, "2099-01-01")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	endDate, err := time.Parse(layout, "2099-01-02")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	reservation.StartDate = startDate
+	reservation.EndDate = endDate
+
+	req, _ := http.NewRequest("GET", "/reservation-summary", nil)
+	ctx := getCtx(req)
+	req = req.WithContext(ctx)
+
+	rr := httptest.NewRecorder()
+	session.Put(ctx, "reservation", reservation)
+
+	handler := http.HandlerFunc(Repo.ReservationSummary)
+
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("ReservationSummary handler returned wrong response code: got %d, wanted %d", rr.Code, http.StatusOK)
+	}
+
+	// test where the reservation is not in session
+	req, _ = http.NewRequest("GET", "/reservation-summary", nil)
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+	rr = httptest.NewRecorder()
+
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusTemporaryRedirect {
+		t.Errorf("ReservationSummary handler returned wrong response code: got %d, wanted %d", rr.Code, http.StatusTemporaryRedirect)
+	}
+}
+
 func TestRepository_AvailabilityJSON(t *testing.T) {
 	// first case - rooms are not available
 	reqBody := "start=2050-01-01"
