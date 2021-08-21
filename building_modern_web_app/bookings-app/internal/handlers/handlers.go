@@ -2,18 +2,16 @@ package handlers
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/config"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/driver"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/forms"
-	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/helpers"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/models"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/render"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/repository"
@@ -352,15 +350,20 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 // ChooseRoom displays list of available rooms
 func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
-	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	// changed to this, so we can test it more easily
+	// split the URL up by /, and grab the 3rd element
+	exploded := strings.Split(r.RequestURI, "/")
+	roomID, err := strconv.Atoi(exploded[2])
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "missing url parameter")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
 	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		helpers.ServerError(w, errors.New("failed to cast to models.Reservation"))
+		m.App.Session.Put(r.Context(), "error", "failed to get reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
