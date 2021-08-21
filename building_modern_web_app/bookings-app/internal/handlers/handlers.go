@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -225,6 +226,20 @@ type jsonResponse struct {
 
 // AvailabilityJSON handles request for availability and sends JSON response
 func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	// need to parse request body
+	err := r.ParseForm()
+	if err != nil {
+		// return approriate json
+		resp := jsonResponse{
+			OK:      false,
+			Message: "Cannot parse the form",
+		}
+		out, _ := json.MarshalIndent(resp, "", "      ")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(out)
+		return
+	}
+
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 
@@ -232,27 +247,51 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	layout := "2006-01-02"
 	startDate, err := time.Parse(layout, start)
 	if err != nil {
-		helpers.ServerError(w, err)
+		resp := jsonResponse{
+			OK:      false,
+			Message: "Cannot parse the start field to the time value",
+		}
+		out, _ := json.MarshalIndent(resp, "", "      ")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(out)
 		return
 	}
 	endDate, err := time.Parse(layout, end)
 	if err != nil {
-		helpers.ServerError(w, err)
+		resp := jsonResponse{
+			OK:      false,
+			Message: "Cannot parse the end field to the time value",
+		}
+		out, _ := json.MarshalIndent(resp, "", "      ")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(out)
 		return
 	}
 	roomIDString := r.Form.Get("room_id")
 	roomID, err := strconv.Atoi(roomIDString)
 	if err != nil {
-		helpers.ServerError(w, err)
+		resp := jsonResponse{
+			OK:      false,
+			Message: "Cannot convert room id field to integer type",
+		}
+		out, _ := json.MarshalIndent(resp, "", "      ")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(out)
 		return
 	}
 
 	available, err := m.DB.SearchAvailabilityByDatesAndRoomID(startDate, endDate, roomID)
 	if err != nil {
-		helpers.ServerError(w, err)
+		resp := jsonResponse{
+			OK:      false,
+			Message: "Error querying database",
+		}
+		out, _ := json.MarshalIndent(resp, "", "      ")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(out)
 		return
 	}
-
+	log.Println("available:", available)
 	resp := jsonResponse{
 		OK:        available,
 		Message:   "",
@@ -261,11 +300,8 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 		RoomID:    roomIDString,
 	}
 
-	out, err := json.MarshalIndent(resp, "", "     ")
-	if err != nil {
-		helpers.ServerError(w, err)
-		return
-	}
+	// Remove the error check otherwise it's a never ending chain
+	out, _ := json.MarshalIndent(resp, "", "     ")
 
 	fmt.Println(string(out))
 	w.Header().Set("Content-Type", "application/json")

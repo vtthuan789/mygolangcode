@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -260,6 +261,237 @@ func TestRepository_PostReservation(t *testing.T) {
 
 	if rr.Code != http.StatusTemporaryRedirect {
 		t.Errorf("PostReservation handler failed when testing for fail inserting restriction: got %d, wanted %d", rr.Code, http.StatusTemporaryRedirect)
+	}
+}
+
+func TestRepository_AvailabilityJSON(t *testing.T) {
+	// first case - rooms are not available
+	reqBody := "start=2050-01-01"
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "end=2050-01-02")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+
+	// create request
+	req, _ := http.NewRequest("POST", "/search-availability-json", strings.NewReader(reqBody))
+
+	// get context with session
+	ctx := getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler := http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr := httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	var j jsonResponse
+	err := json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if j.OK || j.Message != "" {
+		t.Error("AvailabilityJSON handler failed when testing where rooms are not available")
+	}
+
+	// second case - room is available
+	reqBody = "start=2049-12-30"
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "end=2049-12-31")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+
+	// create request
+	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(reqBody))
+
+	// get context with session
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler = http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr = httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	err = json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if !j.OK {
+		t.Error("AvailabilityJSON handler failed when testing where room is available")
+	}
+
+	// third case - cannot parse the form
+	// create request with no body
+	req, _ = http.NewRequest("POST", "/search-availability-json", nil)
+
+	// get context with session
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler = http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr = httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	err = json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if j.OK || j.Message != "Cannot parse the form" {
+		t.Error("Got availability or wrong message when request body was empty")
+	}
+
+	// fourth case - invalid start field
+	reqBody = "start=invalid"
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "end=2049-12-31")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+
+	// create request
+	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(reqBody))
+
+	// get context with session
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler = http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr = httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	err = json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if j.OK || j.Message != "Cannot parse the start field to the time value" {
+		t.Error("Got availability or wrong message when start field is invalid")
+	}
+
+	// fifth case - invalid end field
+	reqBody = "start=2049-12-30"
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "end=invalid")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+
+	// create request
+	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(reqBody))
+
+	// get context with session
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler = http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr = httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	err = json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if j.OK || j.Message != "Cannot parse the end field to the time value" {
+		t.Error("Got availability or wrong message when end field is invalid")
+	}
+
+	// sixth case - room id is not a number
+	reqBody = "start=2049-12-30"
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "end=2049-12-31")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=invalid")
+
+	// create request
+	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(reqBody))
+
+	// get context with session
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler = http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr = httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	err = json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if j.OK || j.Message != "Cannot convert room id field to integer type" {
+		t.Error("Got availability or wrong message when room id is not a number")
+	}
+
+	// seventh case - database error
+	reqBody = "start=2049-12-30"
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "end=2049-12-31")
+	// set room_id equal to 99 to trap database error
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=99")
+
+	// create request
+	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(reqBody))
+
+	// get context with session
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+
+	// set the request header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	// make handler function
+	handler = http.HandlerFunc(Repo.AvailabilityJSON)
+
+	// get response recorder
+	rr = httptest.NewRecorder()
+
+	// make request to our handler
+	handler.ServeHTTP(rr, req)
+
+	err = json.Unmarshal(rr.Body.Bytes(), &j)
+	if err != nil {
+		t.Error("failed to parse json")
+	}
+
+	if j.OK || j.Message != "Error querying database" {
+		t.Error("Got availability or wrong message when expecting database error")
 	}
 }
 

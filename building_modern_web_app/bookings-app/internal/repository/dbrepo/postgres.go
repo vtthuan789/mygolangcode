@@ -2,6 +2,7 @@ package dbrepo
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/models"
@@ -71,6 +72,7 @@ func (m *postgresDBRepo) SearchAvailabilityByDatesAndRoomID(
 
 	row := m.DB.QueryRowContext(ctx, query, roomID, start, end)
 	err := row.Scan(&numRows)
+	log.Println("numRows:", numRows)
 
 	if err == nil && numRows == 0 {
 		return true, nil
