@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"reflect"
 	"strings"
 	"testing"
@@ -157,12 +158,17 @@ func TestRepository_PostReservation(t *testing.T) {
 	}
 	reservation.StartDate = startDate
 	reservation.EndDate = endDate
-	reqBody := "first_name=Thuan"
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	// reqBody := "first_name=Thuan"
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	postedData := url.Values{}
+	postedData.Add("first_name", "Thuan")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "vtthuan@example.com")
+	postedData.Add("phone", "999-9999-99999")
 
-	req, _ := http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
+	req, _ := http.NewRequest("POST", "/make-reservation", strings.NewReader(postedData.Encode()))
 	ctx := getCtx(req)
 	req = req.WithContext(ctx)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -204,12 +210,17 @@ func TestRepository_PostReservation(t *testing.T) {
 	}
 
 	// test for invalid form data, first_name is less than 3 character long
-	reqBody = "first_name=T"
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	// reqBody = "first_name=T"
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	postedData = url.Values{}
+	postedData.Add("first_name", "T")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "vtthuan@example.com")
+	postedData.Add("phone", "999-9999-99999")
 
-	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
+	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(postedData.Encode()))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -224,12 +235,17 @@ func TestRepository_PostReservation(t *testing.T) {
 	}
 
 	// test for failure for insert reservation into database
-	reqBody = "first_name=Thuan"
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	// reqBody = "first_name=Thuan"
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	postedData = url.Values{}
+	postedData.Add("first_name", "Thuan")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "vtthuan@example.com")
+	postedData.Add("phone", "999-9999-99999")
 
-	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
+	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(postedData.Encode()))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -245,12 +261,17 @@ func TestRepository_PostReservation(t *testing.T) {
 	}
 
 	// test for failure for insert restriction into database
-	reqBody = "first_name=Thuan"
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
-	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	// reqBody = "first_name=Thuan"
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "last_name=Vo")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "email=vtthuan@example.com")
+	// reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=999-9999-99999")
+	postedData = url.Values{}
+	postedData.Add("first_name", "Thuan")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "vtthuan@example.com")
+	postedData.Add("phone", "999-9999-99999")
 
-	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
+	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(postedData.Encode()))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
