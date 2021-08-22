@@ -151,6 +151,38 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// send email notification to guest
+	htmlMessage := fmt.Sprintf(`
+	<strong>Reservation Confirmation</strong><br>
+	Dear %s, <br>
+	This confirms your reservation from %s to %s.
+	`, reservation.FirstName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"))
+
+	msg := models.MailData{
+		To:      reservation.Email,
+		From:    "tony@stark.com",
+		Subject: "Reservation Confirmation",
+		Content: htmlMessage,
+	}
+
+	m.App.MailChan <- msg
+
+	// send email notification to owner
+	htmlMessage = fmt.Sprintf(`
+	<strong>Reservation Notification</strong><br>
+	Dear Owner, <br>
+	This notifies the reservation of %s from %s to %s.
+	`, reservation.FirstName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"))
+
+	msg = models.MailData{
+		To:      "tony@stark.com",
+		From:    "notify@email.com",
+		Subject: "Reservation Notification",
+		Content: htmlMessage,
+	}
+
+	m.App.MailChan <- msg
+
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 
