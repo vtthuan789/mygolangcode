@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/justinas/nosurf"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/helpers"
 )
 
 // NoSurf adds CSRF protection to all POST requests
@@ -23,4 +24,16 @@ func NoSurf(next http.Handler) http.Handler {
 // SessionLoad loads and saves session on every request
 func SessionLoad(next http.Handler) http.Handler {
 	return session.LoadAndSave(next)
+}
+
+// Auth authenticates user on every protected routes
+func Auth(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !helpers.IsAuthenticate(r) {
+			session.Put(r.Context(), "error", "Log in first!")
+			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }
