@@ -28,4 +28,5 @@ require (
 	github.com/lib/pq v1.10.2 // indirect
 	github.com/spf13/cobra v1.2.1 // indirect
 	github.com/xhit/go-simple-mail/v2 v2.10.0
+	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
 )
