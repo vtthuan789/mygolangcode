@@ -12,6 +12,7 @@ import (
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/config"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/driver"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/forms"
+	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/helpers"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/models"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/render"
 	"github.com/vtthuan789/mygolangcode/building_modern_web_app/bookings-app/internal/repository"
@@ -505,7 +506,18 @@ func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request
 }
 
 func (m *Repository) AdminAllReservations(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, r, "admin-all-reservations.page.tmpl", &models.TemplateData{})
+	reservations, err := m.DB.AllReservations()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["reservations"] = reservations
+
+	render.Template(w, r, "admin-all-reservations.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }
 
 func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
