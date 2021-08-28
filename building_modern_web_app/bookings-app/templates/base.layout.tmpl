@@ -46,7 +46,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">&nbsp;</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -76,14 +76,13 @@
 			<li class="nav-item">
 				{{if eq .IsAuthenticated 1}}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Admin
 						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
-							<a class="dropdown-item" href="/user/logout">Logout</a>
-						</div>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+							<li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+						</ul>
 					</li>
 				{{else}}
 					<a class="nav-link" href="/user/login" tabindex="-1" aria-disabled="true">Login</a>
@@ -101,16 +100,21 @@
 
     <footer class="my-footer">
         <div class="row">
-            <div class="col">
-                left
+            <div class="col text-center">
+                <strong>Fort Smythe Bed &amp; Breakfast</strong><br>
+				100 Rocky Road<br>
+				Northbrook, Ontario<br>
+				Canada<br>
+				(416) 555-1212<br>
+				<a href="mailto:info@fsbb.ca">info@fsbb.ca</a>
             </div>
 
-            <div class="col">
-                center
+            <div class="col text-center">
+                
             </div>
 
-            <div class="col">
-                right
+            <div class="col text-center">
+                <strong>Your home away<br>from home</strong>
             </div>
         </div>
     </footer>
