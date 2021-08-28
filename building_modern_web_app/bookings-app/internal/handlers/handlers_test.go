@@ -45,8 +45,11 @@ var theTests = []struct {
 	{"reservations-new", "/admin/reservations-new", "GET", http.StatusOK},
 	{"reservations-all", "/admin/reservations-all", "GET", http.StatusOK},
 	{"reservations-calendar", "/admin/reservations-calendar", "GET", http.StatusOK},
+	{"reservations-calendar with query params", "/admin/reservations-calendar?y=2021&m=8", "GET", http.StatusOK},
 	{"process-reservation", "/admin/process-reservation/new/1/do", "GET", http.StatusOK},
+	{"process-reservation with query params", "/admin/process-reservation/new/1/do?y=2021&m=8", "GET", http.StatusOK},
 	{"delete-reservation", "/admin/delete-reservation/new/1/do", "GET", http.StatusOK},
+	{"delete-reservation with query params", "/admin/delete-reservation/new/1/do?y=2021&m=8", "GET", http.StatusOK},
 	{"show reservation", "/admin/reservations/{src}/1/show", "GET", http.StatusOK},
 	// {"make-res", "/make-reservation", "GET", []postData{}, http.StatusOK},
 	// {"post-search-avail", "/search-availability", "POST", []postData{
@@ -752,9 +755,7 @@ func TestRepository_ChooseRoom(t *testing.T) {
 	req = req.WithContext(ctx)
 	// set the RequestURI on the request so that we can grab the ID
 	// from the URL
-	log.Println(req)
 	req.RequestURI = "/choose-room/1"
-	log.Println(req)
 
 	rr := httptest.NewRecorder()
 	session.Put(ctx, "reservation", reservation)
@@ -808,6 +809,147 @@ func TestRepository_NewRepo(t *testing.T) {
 	if reflect.TypeOf(testRepo).String() != "*handlers.Repository" {
 		t.Errorf("Did not get correct type from NewRepo: got %s, wanted *Repository", reflect.TypeOf(testRepo).String())
 	}
+}
+
+var loginTests = []struct {
+	name               string
+	email              string
+	expectedStatusCode int
+	expectedHTML       string
+	expectedLocation   string
+}{
+	{
+		"valid-credentials",
+		"admin@admin.com",
+		http.StatusSeeOther,
+		"",
+		"/",
+	},
+	{
+		"invalid-credentials",
+		"me@example.com",
+		http.StatusSeeOther,
+		"",
+		"/user/login",
+	},
+	{
+		"invalid-data",
+		"wrongemail",
+		http.StatusOK,
+		`action="/user/login"`,
+		"",
+	},
+}
+
+func TestLogin(t *testing.T) {
+	// range through all tests
+	for _, e := range loginTests {
+		postedData := url.Values{}
+		postedData.Add("email", e.email)
+		postedData.Add("password", "password")
+
+		req, _ := http.NewRequest("POST", "/user/login", strings.NewReader(postedData.Encode()))
+		ctx := getCtx(req)
+		req = req.WithContext(ctx)
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		rr := httptest.NewRecorder()
+
+		handler := http.HandlerFunc(Repo.PostShowLogin)
+		handler.ServeHTTP(rr, req)
+
+		if rr.Code != e.expectedStatusCode {
+			t.Errorf("failed %s: got code %d, wanted code %d", e.name, rr.Code, e.expectedStatusCode)
+		}
+
+		if e.expectedLocation != "" {
+			// get the URL from the test
+			actualLoc, _ := rr.Result().Location()
+			if actualLoc.String() != e.expectedLocation {
+				t.Errorf("failed %s: got URL %s, wanted URL %s", e.name, actualLoc.String(), e.expectedLocation)
+			}
+		}
+
+		if e.expectedHTML != "" {
+			// read the response body into a string
+			actualHTML := rr.Body.String()
+			if !strings.Contains(actualHTML, e.expectedHTML) {
+				t.Errorf("failed %s: expected to find %s, but did not", e.name, e.expectedHTML)
+			}
+		}
+	}
+}
+
+func TestRepository_AdminPostShowReservation(t *testing.T) {
+	postedData := url.Values{}
+	postedData.Add("first_name", "Thuan")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "admin@admin.com")
+	postedData.Add("phone", "999-9999-99999")
+	postedData.Add("year", "2021")
+	postedData.Add("month", "8")
+
+	req, _ := http.NewRequest("POST", "/admin/reservations/{src}/1", strings.NewReader(postedData.Encode()))
+	ctx := getCtx(req)
+	req = req.WithContext(ctx)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	rr := httptest.NewRecorder()
+
+	handler := http.HandlerFunc(Repo.AdminPostShowReservation)
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Errorf("AdminPostShowReservation handler returned wrong response code: got %d, wanted %d", rr.Code, http.StatusSeeOther)
+	}
+	// second case - postedDate does not contain year
+	postedData = url.Values{}
+	postedData.Add("first_name", "Thuan")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "admin@admin.com")
+	postedData.Add("phone", "999-9999-99999")
+
+	req, _ = http.NewRequest("POST", "/admin/reservations/{src}/1", strings.NewReader(postedData.Encode()))
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	rr = httptest.NewRecorder()
+
+	handler = http.HandlerFunc(Repo.AdminPostShowReservation)
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Errorf("AdminPostShowReservation handler returned wrong response code: got %d, wanted %d", rr.Code, http.StatusSeeOther)
+	}
+}
+
+func TestRepository_AdminPostReservationsCalendar(t *testing.T) {
+	blockMap_1 := make(map[string]int)
+	blockMap_1["2021-08-28"] = 0
+	blockMap_2 := make(map[string]int)
+	blockMap_2["2021-08-28"] = 1
+	postedData := url.Values{}
+	postedData.Add("first_name", "Thuan")
+	postedData.Add("last_name", "Vo")
+	postedData.Add("email", "admin@admin.com")
+	postedData.Add("phone", "999-9999-99999")
+	postedData.Add("year", "2021")
+	postedData.Add("month", "8")
+	postedData.Add("add_block_1_2021-08-29", "1")
+
+	req, _ := http.NewRequest("POST", "/admin/process-reservation/{src}/1/do", strings.NewReader(postedData.Encode()))
+	ctx := getCtx(req)
+	req = req.WithContext(ctx)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	rr := httptest.NewRecorder()
+	session.Put(ctx, "block_map_1", blockMap_1)
+	session.Put(ctx, "block_map_2", blockMap_2)
+
+	handler := http.HandlerFunc(Repo.AdminPostReservationsCalendar)
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Errorf("AdminPostReservationsCalendar handler returned wrong response code: got %d, wanted %d", rr.Code, http.StatusSeeOther)
+	}
+
 }
 
 func getCtx(req *http.Request) context.Context {

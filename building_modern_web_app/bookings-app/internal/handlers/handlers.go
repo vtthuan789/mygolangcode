@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -333,7 +332,6 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 		w.Write(out)
 		return
 	}
-	log.Println("available:", available)
 	resp := jsonResponse{
 		OK:        available,
 		Message:   "",
@@ -345,7 +343,6 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	// Remove the error check otherwise it's a never ending chain
 	out, _ := json.MarshalIndent(resp, "", "     ")
 
-	fmt.Println(string(out))
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
 }
@@ -459,7 +456,8 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		render.Template(w, r, "login.page.tmpl", &models.TemplateData{})
+		return
 	}
 
 	email := r.Form.Get("email")
@@ -477,8 +475,6 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 
 	id, _, err := m.DB.Authenticate(email, password)
 	if err != nil {
-		log.Println(err)
-
 		m.App.Session.Put(r.Context(), "error", "Invalid login credentials")
 		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 		return
@@ -578,7 +574,7 @@ func (m *Repository) AdminPostShowReservation(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	exploded := strings.Split(r.RequestURI, "/")
+	exploded := strings.Split(r.URL.String(), "/")
 	id, err := strconv.Atoi(exploded[4])
 	if err != nil {
 		helpers.ServerError(w, err)

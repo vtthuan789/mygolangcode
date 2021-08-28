@@ -105,10 +105,10 @@ func (m *testDBRepo) UpdateUser(u models.User) error {
 
 // Authenticate authenticates a user
 func (m *testDBRepo) Authenticate(email, testPassword string) (int, string, error) {
-	var id int
-	var hashedPassword string
-
-	return id, hashedPassword, nil
+	if email == "admin@admin.com" {
+		return 1, "", nil
+	}
+	return 0, "", errors.New("invalid email or password")
 }
 
 func (m *testDBRepo) AllReservations() ([]models.Reservation, error) {
@@ -145,13 +145,47 @@ func (m *testDBRepo) UpdateProcessedForReservation(id, processed int) error {
 
 // AllRooms gets all rooms
 func (m *testDBRepo) AllRooms() ([]models.Room, error) {
-	var rooms []models.Room
+	rooms := []models.Room{
+		{
+			ID:        1,
+			RoomName:  "General's Quarter",
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+		{
+			ID:        2,
+			RoomName:  "Major's Suite",
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
 	return rooms, nil
 }
 
 // GetRestrictionsForRoomByDate returns restrictions for a room by date range
 func (m *testDBRepo) GetRestrictionsForRoomByDate(roomID int, startDate, endDate time.Time) ([]models.RoomRestriction, error) {
-	var restrictions []models.RoomRestriction
+	restrictions := []models.RoomRestriction{
+		{
+			ID:            1,
+			StartDate:     time.Now(),
+			EndDate:       time.Now(),
+			RoomID:        1,
+			ReservationID: 1,
+			RestrictionID: 1,
+			CreatedAt:     time.Now(),
+			UpdatedAt:     time.Now(),
+		},
+		{
+			ID:            2,
+			StartDate:     time.Now(),
+			EndDate:       time.Now(),
+			RoomID:        2,
+			ReservationID: 0,
+			RestrictionID: 2,
+			CreatedAt:     time.Now(),
+			UpdatedAt:     time.Now(),
+		},
+	}
 	return restrictions, nil
 }
 
