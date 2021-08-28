@@ -112,6 +112,10 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	reservation.Email = r.Form.Get("email")
 	reservation.Phone = r.Form.Get("phone")
 
+	stringMap := make(map[string]string)
+	stringMap["start_date"] = r.Form.Get("start_date")
+	stringMap["end_date"] = r.Form.Get("end_date")
+
 	form := forms.New(r.PostForm)
 
 	form.Required("first_name", "last_name", "email")
@@ -121,10 +125,10 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
-		http.Error(w, "my own error message for testing", http.StatusSeeOther)
 		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-			Form: form,
-			Data: data,
+			Form:      form,
+			Data:      data,
+			StringMap: stringMap,
 		})
 		return
 	}

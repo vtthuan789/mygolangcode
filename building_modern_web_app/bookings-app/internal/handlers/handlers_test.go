@@ -247,8 +247,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	handler = http.HandlerFunc(Repo.PostReservation)
 	handler.ServeHTTP(rr, req)
 
-	if rr.Code != http.StatusSeeOther {
-		t.Errorf("PostReservation handler failed when testing for invalid form data: got %d, wanted %d", rr.Code, http.StatusSeeOther)
+	if rr.Code != http.StatusOK {
+		t.Errorf("PostReservation handler failed when testing for invalid form data: got %d, wanted %d", rr.Code, http.StatusOK)
 	}
 
 	// test for failure for insert reservation into database
