@@ -3,14 +3,33 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"net/http"
 
 	"github.comvtthuan789mygolangcodego-httpclient/gohttp"
 )
 
-func main() {
+var (
+	githubHttpClient = getGithubHttpClient()
+)
+
+func getGithubHttpClient() gohttp.HttpClient {
 	client := gohttp.New()
 
-	response, err := client.Get("https://api.github.com", nil)
+	commonHeaders := make(http.Header)
+	commonHeaders.Set("Authorization", "Bearer ABC 123")
+	client.SetHeaders(commonHeaders)
+
+	return client
+}
+
+func main() {
+	getUrls()
+	getUrls()
+	getUrls()
+}
+
+func getUrls() {
+	response, err := githubHttpClient.Get("https://api.github.com", nil)
 	if err != nil {
 		panic(err)
 	}
