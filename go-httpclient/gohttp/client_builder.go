@@ -29,11 +29,7 @@ func NewBuilder() ClientBuilder {
 
 func (c *clientBuilder) Build() Client {
 	client := &httpClient{
-		headers:            c.headers,
-		connectionTimeout:  c.connectionTimeout,
-		responseTimeout:    c.responseTimeout,
-		maxIdleConnections: c.maxIdleConnections,
-		disableTimeouts:    c.disableTimeouts,
+		builder: c,
 	}
 
 	return client
