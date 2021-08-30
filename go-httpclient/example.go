@@ -18,7 +18,9 @@ func getGithubHttpClient() gohttp.HttpClient {
 
 	client.SetMaxIdleConnections(20)
 	client.SetConnectionTimeout(2 * time.Second)
-	client.SetResponseTimeout(5 * time.Second)
+	client.SetResponseTimeout(50 * time.Millisecond)
+
+	client.DisableTimeouts(true)
 
 	commonHeaders := make(http.Header)
 	client.SetHeaders(commonHeaders)
