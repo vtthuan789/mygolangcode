@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.comvtthuan789mygolangcodego-httpclient/gohttp"
 )
@@ -14,6 +15,10 @@ var (
 
 func getGithubHttpClient() gohttp.HttpClient {
 	client := gohttp.New()
+
+	client.SetMaxIdleConnections(20)
+	client.SetConnectionTimeout(2 * time.Second)
+	client.SetResponseTimeout(5 * time.Second)
 
 	commonHeaders := make(http.Header)
 	client.SetHeaders(commonHeaders)
