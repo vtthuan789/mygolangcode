@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 
 	"github.comvtthuan789mygolangcodego-httpclient/gohttp"
 )
@@ -34,10 +33,9 @@ func getUrls() {
 		panic(err)
 	}
 
-	fmt.Println(response.StatusCode)
-
-	bytes, _ := ioutil.ReadAll(response.Body)
-	fmt.Println(string(bytes))
+	fmt.Println(response.Status())
+	fmt.Println(response.StatusCode())
+	fmt.Println(response.String())
 }
 
 type User struct {
@@ -51,8 +49,7 @@ func createUser(user User) {
 		panic(err)
 	}
 
-	fmt.Println(response.StatusCode)
-
-	bytes, _ := ioutil.ReadAll(response.Body)
-	fmt.Println(string(bytes))
+	fmt.Println(response.Status())
+	fmt.Println(response.StatusCode())
+	fmt.Println(response.Bytes())
 }

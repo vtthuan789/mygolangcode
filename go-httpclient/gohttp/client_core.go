@@ -6,6 +6,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"strings"
@@ -18,7 +19,7 @@ const (
 	defaultConnectionTimeout  = 1 * time.Second
 )
 
-func (c *httpClient) do(method, url string, headers http.Header, body interface{}) (*http.Response, error) {
+func (c *httpClient) do(method, url string, headers http.Header, body interface{}) (*Response, error) {
 	fullHeaders := c.getRequestHeaders(headers)
 
 	requestBody, err := c.getRequestBody(fullHeaders.Get("Content-Type"), body)
@@ -33,7 +34,26 @@ func (c *httpClient) do(method, url string, headers http.Header, body interface{
 
 	client := c.getHttpClient()
 
-	return client.Do(request)
+	httpResponse, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	defer httpResponse.Body.Close()
+
+	bytes, err := ioutil.ReadAll(httpResponse.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Response{
+		status:     httpResponse.Status,
+		statusCode: httpResponse.StatusCode,
+		headers:    httpResponse.Header,
+		body:       bytes,
+	}
+
+	return response, nil
 }
 
 func (c *httpClient) getHttpClient() *http.Client {
