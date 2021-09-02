@@ -6,30 +6,18 @@ import (
 )
 
 type Response struct {
-	status     string
-	statusCode int
-	headers    http.Header
-	body       []byte
-}
-
-func (r *Response) Status() string {
-	return r.status
-}
-
-func (r *Response) StatusCode() int {
-	return r.statusCode
-}
-
-func (r *Response) Headers() http.Header {
-	return r.headers
+	Status     string
+	StatusCode int
+	Headers    http.Header
+	Body       []byte
 }
 
 func (r *Response) Bytes() []byte {
-	return r.body
+	return r.Body
 }
 
 func (r *Response) String() string {
-	return string(r.body)
+	return string(r.Body)
 }
 
 func (r *Response) UnmarshalJson(target interface{}) error {

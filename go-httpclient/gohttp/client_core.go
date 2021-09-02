@@ -47,10 +47,10 @@ func (c *httpClient) do(method, url string, headers http.Header, body interface{
 	}
 
 	response := &Response{
-		status:     httpResponse.Status,
-		statusCode: httpResponse.StatusCode,
-		headers:    httpResponse.Header,
-		body:       bytes,
+		Status:     httpResponse.Status,
+		StatusCode: httpResponse.StatusCode,
+		Headers:    httpResponse.Header,
+		Body:       bytes,
 	}
 
 	return response, nil
