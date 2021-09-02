@@ -1,4 +1,4 @@
-package gohttp
+package core
 
 import (
 	"encoding/json"

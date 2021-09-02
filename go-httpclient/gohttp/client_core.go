@@ -11,6 +11,9 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.comvtthuan789mygolangcodego-httpclient/core"
+	gohttpmock "github.comvtthuan789mygolangcodego-httpclient/gohttp_mock"
 )
 
 const (
@@ -19,7 +22,7 @@ const (
 	defaultConnectionTimeout  = 1 * time.Second
 )
 
-func (c *httpClient) do(method, url string, headers http.Header, body interface{}) (*Response, error) {
+func (c *httpClient) do(method, url string, headers http.Header, body interface{}) (*core.Response, error) {
 	fullHeaders := c.getRequestHeaders(headers)
 
 	requestBody, err := c.getRequestBody(fullHeaders.Get("Content-Type"), body)
@@ -46,7 +49,7 @@ func (c *httpClient) do(method, url string, headers http.Header, body interface{
 		return nil, err
 	}
 
-	response := &Response{
+	response := &core.Response{
 		Status:     httpResponse.Status,
 		StatusCode: httpResponse.StatusCode,
 		Headers:    httpResponse.Header,
@@ -56,7 +59,11 @@ func (c *httpClient) do(method, url string, headers http.Header, body interface{
 	return response, nil
 }
 
-func (c *httpClient) getHttpClient() *http.Client {
+func (c *httpClient) getHttpClient() core.HttpClient {
+	if gohttpmock.MockupServer.IsEnabled() {
+		return gohttpmock.MockupServer.GetMockedClient()
+	}
+
 	c.clientOnce.Do(func() {
 		fmt.Println("Creating a new http client!!!!!")
 		c.client = &http.Client{

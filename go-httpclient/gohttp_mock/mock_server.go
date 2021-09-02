@@ -5,13 +5,21 @@ import (
 	"encoding/hex"
 	"strings"
 	"sync"
+
+	"github.comvtthuan789mygolangcodego-httpclient/core"
 )
 
 type mockServer struct {
 	enabled     bool
 	serverMutex sync.Mutex
 
-	mock map[string]*Mock
+	mocks      map[string]*Mock
+	httpClient core.HttpClient
+}
+
+var MockupServer = mockServer{
+	mocks:      make(map[string]*Mock),
+	httpClient: &httpClientMock{},
 }
 
 func (m *mockServer) Start() {
@@ -30,6 +38,10 @@ func (m *mockServer) Stop() {
 
 func (m *mockServer) IsEnabled() bool {
 	return m.enabled
+}
+
+func (m *mockServer) GetMockedClient() core.HttpClient {
+	return m.httpClient
 }
 
 func (m *mockServer) cleanBody(body string) string {
@@ -54,12 +66,12 @@ func (m *mockServer) AddMock(mock Mock) {
 	defer m.serverMutex.Unlock()
 
 	key := m.getMockKey(mock.Method, mock.Url, mock.RequestBody)
-	m.mock[key] = &mock
+	m.mocks[key] = &mock
 }
 
 func (m *mockServer) DeleteMocks() {
 	m.serverMutex.Lock()
 	defer m.serverMutex.Unlock()
 
-	m.mock = make(map[string]*Mock)
+	m.mocks = make(map[string]*Mock)
 }

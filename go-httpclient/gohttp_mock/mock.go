@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.comvtthuan789mygolangcodego-httpclient/gohttp"
+	"github.comvtthuan789mygolangcodego-httpclient/core"
 )
 
 type Mock struct {
@@ -18,12 +18,12 @@ type Mock struct {
 	ResponseHeaders    http.Header
 }
 
-func (m *Mock) GetResponse() (*gohttp.Response, error) {
+func (m *Mock) GetResponse() (*core.Response, error) {
 	if m.Error != nil {
 		return nil, m.Error
 	}
 
-	response := gohttp.Response{
+	response := core.Response{
 		Status:     fmt.Sprintf("%d %s", m.ResponseStatusCode, http.StatusText(m.ResponseStatusCode)),
 		StatusCode: m.ResponseStatusCode,
 		Body:       []byte(m.ResponseBody),
