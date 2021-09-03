@@ -66,6 +66,11 @@ func (c *httpClient) getHttpClient() core.HttpClient {
 
 	c.clientOnce.Do(func() {
 		fmt.Println("Creating a new http client!!!!!")
+		if c.builder.client != nil {
+			c.client = c.builder.client
+			return
+		}
+
 		c.client = &http.Client{
 			Timeout: c.getConnectionTimeout() + c.getResponseTimeout(),
 			Transport: &http.Transport{
