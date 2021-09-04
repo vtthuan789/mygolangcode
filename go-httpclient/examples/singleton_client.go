@@ -3,7 +3,7 @@ package examples
 import (
 	"time"
 
-	"github.comvtthuan789mygolangcodego-httpclient/gohttp"
+	"github.com/vtthuan789/mygolangcode/go-httpclient/gohttp"
 )
 
 var httpClient = getHttpClient()

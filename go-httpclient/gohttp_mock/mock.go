@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.comvtthuan789mygolangcodego-httpclient/core"
+	"github.com/vtthuan789/mygolangcode/go-httpclient/core"
 )
 
 type Mock struct {

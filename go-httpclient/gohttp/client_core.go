@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.comvtthuan789mygolangcodego-httpclient/core"
-	gohttpmock "github.comvtthuan789mygolangcodego-httpclient/gohttp_mock"
-	"github.comvtthuan789mygolangcodego-httpclient/gomime"
+	"github.com/vtthuan789/mygolangcode/go-httpclient/core"
+	gohttpmock "github.com/vtthuan789/mygolangcode/go-httpclient/gohttp_mock"
+	"github.com/vtthuan789/mygolangcode/go-httpclient/gomime"
 )
 
 const (

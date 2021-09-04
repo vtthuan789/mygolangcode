@@ -3,7 +3,7 @@ package gohttp
 import (
 	"testing"
 
-	"github.comvtthuan789mygolangcodego-httpclient/gomime"
+	"github.com/vtthuan789/mygolangcode/go-httpclient/gomime"
 )
 
 func Test_getRequestBody(t *testing.T) {
