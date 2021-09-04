@@ -11,6 +11,7 @@ type clientBuilder struct {
 	responseTimeout    time.Duration
 	maxIdleConnections int
 	disableTimeouts    bool
+	userAgent          string
 	client             *http.Client
 }
 
@@ -21,6 +22,7 @@ type ClientBuilder interface {
 	SetMaxIdleConnections(i int) ClientBuilder
 	DisableTimeouts(disable bool) ClientBuilder
 	SetHttpClient(client *http.Client) ClientBuilder
+	SetUseAgent(userAgent string) ClientBuilder
 	Build() Client
 }
 
@@ -64,5 +66,10 @@ func (c *clientBuilder) DisableTimeouts(disable bool) ClientBuilder {
 
 func (c *clientBuilder) SetHttpClient(client *http.Client) ClientBuilder {
 	c.client = client
+	return c
+}
+
+func (c *clientBuilder) SetUseAgent(userAgent string) ClientBuilder {
+	c.userAgent = userAgent
 	return c
 }

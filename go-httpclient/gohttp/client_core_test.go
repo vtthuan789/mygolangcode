@@ -2,6 +2,8 @@ package gohttp
 
 import (
 	"testing"
+
+	"github.comvtthuan789mygolangcodego-httpclient/gomime"
 )
 
 func Test_getRequestBody(t *testing.T) {
@@ -10,7 +12,7 @@ func Test_getRequestBody(t *testing.T) {
 	// 1st case --- nil body
 	t.Run("NilBody", func(t *testing.T) {
 		// Execution
-		actualBody, err := client.getRequestBody("application/json", nil)
+		actualBody, err := client.getRequestBody(gomime.ContentTypeJson, nil)
 		if err != nil {
 			t.Errorf("test NilBody expected no error, but got %s", err.Error())
 		}
@@ -23,7 +25,7 @@ func Test_getRequestBody(t *testing.T) {
 	t.Run("JsonBody", func(t *testing.T) {
 		// Execution
 		requestBody := []string{"one", "two"}
-		actualBody, err := client.getRequestBody("application/json", requestBody)
+		actualBody, err := client.getRequestBody(gomime.ContentTypeJson, requestBody)
 		if err != nil {
 			t.Errorf("test JsonBody expected no error, but got %s", err.Error())
 		}
@@ -36,7 +38,7 @@ func Test_getRequestBody(t *testing.T) {
 	t.Run("XmlBody", func(t *testing.T) {
 		// Execution
 		requestBody := []string{"one", "two"}
-		actualBody, err := client.getRequestBody("application/xml", requestBody)
+		actualBody, err := client.getRequestBody(gomime.ContentTypeXml, requestBody)
 		if err != nil {
 			t.Errorf("test XmlBody expected no error, but got %s", err.Error())
 		}

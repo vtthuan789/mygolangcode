@@ -3,6 +3,8 @@ package gohttp
 import (
 	"net/http"
 	"testing"
+
+	"github.comvtthuan789mygolangcodego-httpclient/gomime"
 )
 
 func Test_getRequestHeaders(t *testing.T) {
@@ -12,12 +14,14 @@ func Test_getRequestHeaders(t *testing.T) {
 		client:  &http.Client{},
 	}
 	commonHeaders := make(http.Header)
-	commonHeaders.Set("Content-Type", "application/json")
-	commonHeaders.Set("User-Agent", "cool-http-client")
+	commonHeaders.Set(gomime.HeaderContentType, gomime.ContentTypeJson)
+	// commonHeaders.Set(gomime.HeaderUserAgent, "cool-http-client")
 	client.builder.headers = commonHeaders
 
 	requestHeaders := make(http.Header)
 	requestHeaders.Set("X-Request-Id", "ABC-123")
+
+	client.builder.SetUseAgent("vtthuan-computer")
 
 	// Execution
 	actualHeaders := client.getRequestHeaders(requestHeaders)
