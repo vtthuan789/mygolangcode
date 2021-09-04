@@ -1,8 +1,12 @@
 package gohttp
 
 import (
+	"net/http"
+	"reflect"
 	"testing"
+	"time"
 
+	gohttpmock "github.com/vtthuan789/mygolangcode/go-httpclient/gohttp_mock"
 	"github.com/vtthuan789/mygolangcode/go-httpclient/gomime"
 )
 
@@ -58,6 +62,145 @@ func Test_getRequestBody(t *testing.T) {
 
 		if string(actualBody) != `["one","two"]` {
 			t.Errorf("test JsonBody did not return expected body, got %s", string(actualBody))
+		}
+	})
+}
+
+func Test_getConnectionTimeout(t *testing.T) {
+	client := NewBuilder().DisableTimeouts(true).Build().(*httpClient)
+
+	t.Run("testTimeoutIsDisabled", func(t *testing.T) {
+		timeout := client.getConnectionTimeout()
+
+		if timeout != 0 {
+			t.Error("testTimeoutIsDisabled returned timeout value other than 0")
+		}
+	})
+
+	t.Run("testTimeoutIsEnabled", func(t *testing.T) {
+		client.builder.DisableTimeouts(false)
+		expectedTimeout := 5 * time.Second
+		client.builder.SetConnectionTimeout(expectedTimeout)
+
+		actualTimeout := client.getConnectionTimeout()
+
+		if actualTimeout != expectedTimeout {
+			t.Errorf("testTimeoutIsEnabled returned wrong timeout value: expected %d, got %d", expectedTimeout, actualTimeout)
+		}
+	})
+
+	t.Run("testDefaultTimeout", func(t *testing.T) {
+		client.builder.SetConnectionTimeout(0)
+
+		actualTimeout := client.getConnectionTimeout()
+
+		if actualTimeout != defaultConnectionTimeout {
+			t.Errorf("testDefaultTimeout returned wrong timeout value: expected %d, got %d", defaultConnectionTimeout, actualTimeout)
+		}
+	})
+}
+
+func Test_getResponseTimeout(t *testing.T) {
+	client := NewBuilder().DisableTimeouts(true).Build().(*httpClient)
+
+	t.Run("testTimeoutIsDisabled", func(t *testing.T) {
+		timeout := client.getResponseTimeout()
+
+		if timeout != 0 {
+			t.Error("testTimeoutIsDisabled returned timeout value other than 0")
+		}
+	})
+
+	t.Run("testTimeoutIsEnabled", func(t *testing.T) {
+		client.builder.DisableTimeouts(false)
+		expectedTimeout := 5 * time.Second
+		client.builder.SetResponseTimeout(expectedTimeout)
+
+		actualTimeout := client.getResponseTimeout()
+
+		if actualTimeout != expectedTimeout {
+			t.Errorf("testTimeoutIsEnabled returned wrong timeout value: expected %d, got %d", expectedTimeout, actualTimeout)
+		}
+	})
+
+	t.Run("testDefaultTimeout", func(t *testing.T) {
+		client.builder.SetResponseTimeout(0)
+
+		actualTimeout := client.getResponseTimeout()
+
+		if actualTimeout != defaultResponseTimeout {
+			t.Errorf("testDefaultTimeout returned wrong timeout value: expected %d, got %d", defaultResponseTimeout, actualTimeout)
+		}
+	})
+}
+
+func Test_getMaxIdleConnections(t *testing.T) {
+	client := NewBuilder().DisableTimeouts(true).Build().(*httpClient)
+
+	t.Run("testMaxIdleConnectionsNotZero", func(t *testing.T) {
+		expectedConnections := 5
+		client.builder.SetMaxIdleConnections(expectedConnections)
+
+		actualConnections := client.getMaxIdleConnections()
+
+		if actualConnections != expectedConnections {
+			t.Errorf("testMaxIdleConnectionsNotZero returned wrong connections value: expected %d, got %d", expectedConnections, actualConnections)
+		}
+	})
+
+	t.Run("testZeroMaxIdleConnections", func(t *testing.T) {
+		client.builder.SetMaxIdleConnections(0)
+
+		actualConnections := client.getMaxIdleConnections()
+
+		if actualConnections != defaultMaxIdleConnections {
+			t.Errorf("testDefaultTimeout returned wrong timeout value: expected %d, got %d", defaultMaxIdleConnections, actualConnections)
+		}
+	})
+}
+
+func Test_getHttpClient(t *testing.T) {
+	client := NewBuilder().Build().(*httpClient)
+
+	t.Run("testMockServerNotStart", func(t *testing.T) {
+		httpClient := client.getHttpClient()
+
+		if reflect.TypeOf(httpClient).String() != "*http.Client" {
+			t.Errorf("testMockServerNotStart returned wrong http client type: expected *http.Client, got %s", reflect.TypeOf(httpClient).String())
+		}
+	})
+
+	t.Run("testMockServerStarted", func(t *testing.T) {
+		gohttpmock.MockupServer.Start()
+		httpClient := client.getHttpClient()
+
+		if reflect.TypeOf(httpClient).String() != "*gohttpmock.httpClientMock" {
+			t.Errorf("testMockServerStarted returned wrong http client type: expected *gohttpmock.httpClientMock, got %s", reflect.TypeOf(httpClient).String())
+		}
+	})
+
+	t.Run("testCustomHttpServer", func(t *testing.T) {
+		gohttpmock.MockupServer.Stop()
+		client := NewBuilder().SetHttpClient(&http.Client{}).SetConnectionTimeout(5 * time.Second).Build().(*httpClient)
+		httpClient := client.getHttpClient()
+
+		if reflect.TypeOf(httpClient).String() != "*http.Client" {
+			t.Errorf("testCustomHttpServer returned wrong http client type: expected *http.Client, got %s", reflect.TypeOf(httpClient).String())
+		}
+
+		if httpClient.(*http.Client).Timeout != 0 {
+			t.Errorf("testCustomHttpServer no timeout but got %d", httpClient.(*http.Client).Timeout)
+		}
+	})
+}
+func Test_Do(t *testing.T) {
+	client := NewBuilder().Build().(*httpClient)
+
+	t.Run("testDoNoError", func(t *testing.T) {
+		_, err := client.do(http.MethodGet, "https://test.com", http.Header{}, nil)
+
+		if err != nil {
+			t.Errorf("testDoNoError expected no error, but got %s", err.Error())
 		}
 	})
 }
