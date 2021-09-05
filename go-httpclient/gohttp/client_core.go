@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -33,7 +32,7 @@ func (c *httpClient) do(method, url string, headers http.Header, body interface{
 
 	request, err := http.NewRequest(method, url, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return nil, errors.New("unable to create a new request")
+		return nil, err
 	}
 
 	client := c.getHttpClient()

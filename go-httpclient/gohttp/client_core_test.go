@@ -1,6 +1,7 @@
 package gohttp
 
 import (
+	"errors"
 	"net/http"
 	"reflect"
 	"testing"
@@ -201,6 +202,54 @@ func Test_Do(t *testing.T) {
 
 		if err != nil {
 			t.Errorf("testDoNoError expected no error, but got %s", err.Error())
+		}
+	})
+
+	t.Run("testDoInvalidRequestBody", func(t *testing.T) {
+		_, err := client.do(http.MethodGet, "https://test.com", http.Header{}, complex(6, 2))
+
+		if err.Error() != "json: unsupported type: complex128" {
+			t.Errorf("testDoInvalidRequestBody return wrong error message, got %s", err.Error())
+		}
+	})
+
+	t.Run("testDoInvalidRequestMethod", func(t *testing.T) {
+		_, err := client.do("bad method", "https://test.com", http.Header{}, nil)
+
+		if err.Error() != `net/http: invalid method "bad method"` {
+			t.Errorf("testDoInvalidRequestMethod return wrong error message, got %s", err.Error())
+		}
+	})
+
+	t.Run("testDoError", func(t *testing.T) {
+		gohttpmock.MockupServer.Start()
+		gohttpmock.MockupServer.DeleteMocks()
+		gohttpmock.MockupServer.AddMock(gohttpmock.Mock{
+			Method: http.MethodGet,
+			Url:    "https://test.com",
+			Error:  errors.New("error sending HTTP request"),
+		})
+		_, err := client.do(http.MethodGet, "https://test.com", http.Header{}, nil)
+
+		if err.Error() != "error sending HTTP request" {
+			t.Errorf("testDoError return wrong error message, got %s", err.Error())
+		}
+	})
+
+	t.Run("testDoInvalidResponseBody", func(t *testing.T) {
+		gohttpmock.MockupServer.DeleteMocks()
+		gohttpmock.MockupServer.AddMock(gohttpmock.Mock{
+			Method: http.MethodGet,
+			Url:    "https://test.com",
+
+			ResponseStatusCode: http.StatusOK,
+			ResponseHeaders:    http.Header{"Content-Length": []string{"1"}},
+		})
+
+		_, err := client.do(http.MethodGet, "https://test.com", http.Header{}, nil)
+
+		if err.Error() != "error when reading response body" {
+			t.Errorf("testDoInvalidResponseBody return wrong error message, got %s", err.Error())
 		}
 	})
 }

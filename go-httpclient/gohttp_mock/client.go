@@ -1,6 +1,7 @@
 package gohttpmock
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,6 +12,16 @@ type httpClientMock struct{}
 
 type HttpClientMock interface {
 	Do(request *http.Request) (*http.Response, error)
+}
+
+type mockReadCloser struct{}
+
+func (m *mockReadCloser) Read(p []byte) (n int, err error) {
+	return 0, errors.New("error when reading response body")
+}
+
+func (m *mockReadCloser) Close() error {
+	return nil
 }
 
 func (c *httpClientMock) Do(request *http.Request) (*http.Response, error) {
@@ -38,6 +49,9 @@ func (c *httpClientMock) Do(request *http.Request) (*http.Response, error) {
 		response.ContentLength = int64(len(mock.ResponseBody))
 		response.Request = request
 		response.Header = mock.ResponseHeaders
+		if mock.ResponseHeaders.Get("Content-Length") == "1" {
+			response.Body = &mockReadCloser{}
+		}
 		return &response, nil
 	}
 	return nil, fmt.Errorf("no mock matching %s from '%s' with given body", request.Method, request.URL.String())
