@@ -32,10 +32,12 @@ func (c *httpClientMock) Do(request *http.Request) (*http.Response, error) {
 		if mock.Error != nil {
 			return nil, mock.Error
 		}
+		response.Status = fmt.Sprintf("%d %s", mock.ResponseStatusCode, http.StatusText(mock.ResponseStatusCode))
 		response.StatusCode = mock.ResponseStatusCode
 		response.Body = ioutil.NopCloser(strings.NewReader(mock.ResponseBody))
 		response.ContentLength = int64(len(mock.ResponseBody))
 		response.Request = request
+		response.Header = mock.ResponseHeaders
 		return &response, nil
 	}
 	return nil, fmt.Errorf("no mock matching %s from '%s' with given body", request.Method, request.URL.String())
