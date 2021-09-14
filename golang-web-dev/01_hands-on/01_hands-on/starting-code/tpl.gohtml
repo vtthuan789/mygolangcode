@@ -7,9 +7,19 @@
 <body>
 
 {{range .}}
-
-<!-- PUT YOUR CODE HERE TO SHOW THE DATA-->
-
+Academy Year: {{.AcaYear}}
+Semester: {{.Fall.Term}}
+Courses: {{range .Fall.Courses}}
+    {{.Number}}
+    {{.Name}}
+    {{.Units}}
+{{end}}
+Semester: {{.Spring.Term}}
+Courses: {{range .Spring.Courses}}
+    {{.Number}}
+    {{.Name}}
+    {{.Units}}
+{{end}}
 {{end}}
 
 </body>
