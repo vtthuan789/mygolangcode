@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"net"
 )
@@ -34,4 +35,11 @@ func serve(conn net.Conn) {
 		}
 		fmt.Println(line)
 	}
+
+	fmt.Println("Code got here.")
+	_, err := io.WriteString(conn, "I see you connected.")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 }
